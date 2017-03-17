@@ -1,0 +1,28 @@
+name: check_domain_expiration
+description: "file:///README.md"
+url: "https://github.com/ewypych/icinga-domain-expiration-plugin"
+tags: Domain, Expiration, Network, Monitoring, Whois
+vendor: Linux, Centos, Debian
+target: Network, Website
+type: Plugin
+license: MIT
+releases: 
+  - 
+    name: 1.0.0
+    description: "1.0.0 Release"
+    files: 
+      - 
+        name: check_domain_expiration.sh
+        url: "file:///check_domain_expiration.sh"
+        description: "First release"
+        checksum: 4ecc143ed6733b44379af44853cd2886
+      - 
+        name: icinga2.conf
+        url: "file:///commands/icinga2.conf"
+        description: "Example of config for Icinga2"
+        checksum: 8afa3191089d3d6c7d90aecf043f26d3
+      - 
+        name: nagios.cfg
+        url: "file:///commands/nagios.cfg"
+        description: "Example of config for Nagios"
+        checksum: 5908b41e04a00dc30463dae71746eb9f
