@@ -35,6 +35,11 @@ check_domain()
 		EXDATE_TMP=$(${WHOIS} -h whois.internic.com "=${1}" | ${AWK} '/Expiration Date:/ { print $3 }')
 		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+        elif [ "$DTYPE" == "asia" ]
+        then
+                EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }')
+                EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+                EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "org" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.pir.org "${1}" | ${AWK} '/Expiry Date:/ { print $4 }')
