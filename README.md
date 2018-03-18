@@ -26,6 +26,8 @@ Supported Top-level Domains
 * info
 * net
 * ru
+* se
+* asia
 
 License
 ------- 
