@@ -32,7 +32,7 @@ check_domain()
 	if [ "$DTYPE" == "com" ]
 	then
 		# "=${1}" because of many possibilities - check out google.com with "whois google.com"
-		EXDATE_TMP=$(${WHOIS} -h whois.internic.com "=${1}" | ${AWK} '/Expiration Date:/ { print $3 }')
+		EXDATE_TMP=$(${WHOIS} -h whois.internic.com "=${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }')
 		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "org" ]
