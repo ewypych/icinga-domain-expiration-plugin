@@ -25,6 +25,7 @@ Supported Top-level Domains
 * org
 * info
 * net
+* nu
 * ru
 * se
 * asia
