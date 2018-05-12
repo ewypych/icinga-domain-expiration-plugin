@@ -9,6 +9,7 @@ Example of use
 ```sh
 ./check_domain_expiration.sh -d google.com -w 60 -c 30
 ```
+
 Requirements
 ------------
 
@@ -31,7 +32,7 @@ Supported Top-level Domains
 * asia
 
 License
-------- 
+-------
 
 [MIT](https://tldrlegal.com/license/mit-license)
 
