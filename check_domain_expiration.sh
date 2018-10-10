@@ -12,7 +12,7 @@
 
 # default days for warning (can change with -w cmd)
 WARNING=30
- 
+
 # default days for critical (can change with -c cmd)
 ALARM=10
 
@@ -28,7 +28,7 @@ check_domain()
 
 	# check root domain
 	DTYPE=$( echo $DOMAIN | awk -F "." '{print $NF}' )
-	
+
 	if [ "$DTYPE" == "com" ]
 	then
 		# "=${1}" because of many possibilities - check out google.com with "whois google.com"
@@ -64,12 +64,16 @@ check_domain()
 	then
 		EXDATE=$(${WHOIS} -h whois.tcinet.ru "${1}" | ${AWK} '/free-date:/ { print $2 }')
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "art" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.nic.art "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "pl" ]
 	then
-		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/renewal date:/ { gsub("[:.]","-"); print $3 }') 
+		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/renewal date:/ { gsub("[:.]","-"); print $3 }')
 		if [ -z "$EXDATE" ]
 		then
-			EXDATE=$(${WHOIS} -h whois.dns.pl "${1}" | ${AWK} '/expiration date:/ { gsub("[:.]","-"); print $3 }') 
+			EXDATE=$(${WHOIS} -h whois.dns.pl "${1}" | ${AWK} '/expiration date:/ { gsub("[:.]","-"); print $3 }')
 		fi
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	else
@@ -122,7 +126,7 @@ then
 	echo "WARNING - $EXP_DAYS days until domain expires"
 	exit 1
 elif [ $EXP_DAYS -le $ALARM -a $EXP_DAYS -gt 0 ]
-then 
+then
 	echo "CRITICAL - $EXP_DAYS days until domain expires"
 	exit 2
 elif [  $EXP_DAYS -lt 0  ]

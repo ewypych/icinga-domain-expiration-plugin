@@ -30,6 +30,7 @@ Supported Top-level Domains
 * ru
 * se
 * asia
+* art
 
 License
 -------
