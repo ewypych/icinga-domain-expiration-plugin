@@ -31,6 +31,7 @@ Supported Top-level Domains
 * se
 * asia
 * art
+* cz
 
 License
 -------
