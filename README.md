@@ -32,6 +32,7 @@ Supported Top-level Domains
 * su
 * nu
 * ru
+* xn--p1ai (рф)
 * moscow
 * se
 * asia
