@@ -27,6 +27,7 @@ Supported Top-level Domains
 * info
 * net
 * center
+* pro
 * me
 * nu
 * ru
