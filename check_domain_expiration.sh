@@ -79,6 +79,11 @@ check_domain()
 	then
 		EXDATE=$(${WHOIS} -h whois.tcinet.ru "${1}" | ${AWK} '/free-date:/ { print $2 }')
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "moscow" ]
+	then
+		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "art" ]
 	then
 		EXDATE=$(${WHOIS} -h whois.nic.art "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)

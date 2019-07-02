@@ -31,6 +31,7 @@ Supported Top-level Domains
 * me
 * nu
 * ru
+* moscow
 * se
 * asia
 * art
