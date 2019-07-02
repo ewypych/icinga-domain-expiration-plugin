@@ -29,6 +29,7 @@ Supported Top-level Domains
 * center
 * pro
 * me
+* su
 * nu
 * ru
 * moscow
