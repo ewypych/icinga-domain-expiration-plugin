@@ -130,7 +130,7 @@ while getopts :hd:w:c: option
 do
 	case "${option}"
 	in
-		d) DOMAIN=${OPTARG};;
+		d) DOMAIN=$( echo ${OPTARG} | awk -F "." '{print $(NF-1)"."$NF}' );;
 		w) WARNING=$OPTARG;;
 		c) ALARM=$OPTARG;;
 		h | *) help
