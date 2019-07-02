@@ -35,16 +35,16 @@ check_domain()
 		EXDATE_TMP=$(${WHOIS} -h whois.internic.com "=${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
 		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
-        elif [ "$DTYPE" == "se" ] || [ "$DTYPE" == "nu"  ]
-        then
-                EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/expires:/ { print $2 }')
-                EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
-                EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
-        elif [ "$DTYPE" == "asia" ]
-        then
-                EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
-                EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
-                EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "se" ] || [ "$DTYPE" == "nu"  ]
+	then
+		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/expires:/ { print $2 }')
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "asia" ]
+	then
+		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "org" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.pir.org "${1}" | ${AWK} '/Expiry Date:/ { print $4 }' | cut -c 1-16)
@@ -58,6 +58,11 @@ check_domain()
 	elif [ "$DTYPE" == "net" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "center" ]
+	then
+		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
 		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "ru" ]
@@ -89,25 +94,25 @@ check_domain()
 # Help function
 help()
 {
-        echo "Usage: $0 [ -d domain_name ] [ -w ex_days ] [ -c ex_days ] [ -h ]"
-        echo ""
-        echo "  -d domain        : Domain to check"
-        echo "  -h               : Show help"
-        echo "  -w days          : Domain expiration days (warning)"
+	echo "Usage: $0 [ -d domain_name ] [ -w ex_days ] [ -c ex_days ] [ -h ]"
+	echo
+	echo "  -d domain        : Domain to check"
+	echo "  -h               : Show help"
+	echo "  -w days          : Domain expiration days (warning)"
 	echo "  -c days          : Domain expiration days (critical)"
-        echo ""
+	echo
 }
 
 while getopts :hd:w:c: option
 do
-        case "${option}"
-        in
-                d) DOMAIN=${OPTARG};;
-                w) WARNING=$OPTARG;;
+	case "${option}"
+	in
+		d) DOMAIN=${OPTARG};;
+		w) WARNING=$OPTARG;;
 		c) ALARM=$OPTARG;;
-                h | *) help
-                    exit 3;;
-        esac
+		h | *) help
+		exit 3;;
+	esac
 done
 
 # check whether ALARM is greater or equal WARNING
