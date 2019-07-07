@@ -77,15 +77,15 @@ check_domain()
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "su" ]
 	then
-		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/free-date:/ { print $2 }')
+		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/paid-till:/ { print $2 }' | cut -d 'T' -f1)
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "xn--p1ai" ]
 	then
-		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/free-date:/ { print $2 }')
+		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/paid-till:/ { print $2 }' | cut -d 'T' -f1)
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "ru" ]
 	then
-		EXDATE=$(${WHOIS} -h whois.tcinet.ru "${1}" | ${AWK} '/free-date:/ { print $2 }')
+		EXDATE=$(${WHOIS} "${1}" | ${AWK} '/paid-till:/ { print $2 }' | cut -d 'T' -f1)
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "moscow" ]
 	then
