@@ -26,8 +26,14 @@ Supported Top-level Domains
 * org
 * info
 * net
+* center
+* pro
+* me
+* su
 * nu
 * ru
+* xn--p1ai (рф)
+* moscow
 * se
 * asia
 * art
