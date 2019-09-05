@@ -38,6 +38,11 @@ Supported Top-level Domains
 * asia
 * art
 * cz
+* fr
+* re
+* yt
+* tf
+* pm
 
 License
 -------
