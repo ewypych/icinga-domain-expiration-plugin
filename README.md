@@ -43,6 +43,7 @@ Supported Top-level Domains
 * yt
 * tf
 * pm
+* shop
 
 License
 -------
