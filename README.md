@@ -44,6 +44,7 @@ Supported Top-level Domains
 * tf
 * pm
 * shop
+* tv
 
 License
 -------
