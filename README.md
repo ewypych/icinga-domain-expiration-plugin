@@ -43,6 +43,8 @@ Supported Top-level Domains
 * yt
 * tf
 * pm
+* shop
+* tv
 
 License
 -------

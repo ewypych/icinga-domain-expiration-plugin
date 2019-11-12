@@ -112,6 +112,14 @@ check_domain()
 	then
 		EXDATE=$(${WHOIS} -h whois.afnic.fr "${1}" | ${AWK} '/Expiry Date:/ { gsub("[:.]","-"); print $3 }' | cut -d 'T' -f1)
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "shop" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.nic.shop "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "tv" ]
+	then
+		EXDATE=$(${WHOIS} -h tvwhois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3
