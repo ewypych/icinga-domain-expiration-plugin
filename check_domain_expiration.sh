@@ -40,6 +40,11 @@ check_domain()
 		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/expires:/ { print $2 }')
 		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "ua" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.ua "${1}" | ${AWK} '/expires:/ { print $2 }')
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	elif [ "$DTYPE" == "asia" ]
 	then
 		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
