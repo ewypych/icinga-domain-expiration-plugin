@@ -125,6 +125,11 @@ check_domain()
 	then
 		EXDATE=$(${WHOIS} -h tvwhois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
 		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	elif [ "$DTYPE" == "im" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.im "${1}" | ${AWK} '/Expiry Date:/ { gsub("[:.]","-"); print $3 }' | cut -d 'T' -f1 | awk -F[/] '{print $2"/"$1"/"$3}') 
+		EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+		EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3

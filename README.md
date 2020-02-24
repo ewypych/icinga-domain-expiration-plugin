@@ -46,6 +46,7 @@ Supported Top-level Domains
 * shop
 * tv
 * ua
+* im
 
 License
 -------
