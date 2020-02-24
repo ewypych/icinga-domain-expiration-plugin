@@ -8,6 +8,8 @@
 #
 # Contact: wypychemil at gmail.com
 #
+# GitHub: https://github.com/ewypych/icinga-domain-expiration-plugin
+#
 #############################################
 
 # default days for warning (can change with -w cmd)
