@@ -154,7 +154,7 @@ while getopts :hd:w:c: option
 do
 	case "${option}"
 	in
-		d) DOMAIN=$( echo ${OPTARG} | awk -F "." '{print $(NF-1)"."$NF}' );;
+		d) DOMAIN=$( echo ${OPTARG} );;
 		w) WARNING=$OPTARG;;
 		c) ALARM=$OPTARG;;
 		h | *) help
