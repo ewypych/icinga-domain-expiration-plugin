@@ -47,6 +47,7 @@ Supported Top-level Domains
 * tv
 * ua
 * im
+* coop
 
 License
 -------
