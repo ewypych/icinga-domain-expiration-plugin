@@ -47,6 +47,8 @@ Supported Top-level Domains
 * tv
 * ua
 * im
+* uk
+* co.uk
 
 License
 -------
