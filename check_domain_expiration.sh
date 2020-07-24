@@ -220,9 +220,8 @@ check_domain()
 		else
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
-	
-	
-	
+
+
 	elif [ "$DTYPE" == "tv" ]
 	then
 		EXDATE=$(${WHOIS} -h tvwhois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
@@ -232,7 +231,6 @@ check_domain()
 		else
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
-	
 
 
 	elif [ "$DTYPE" == "im" ]
@@ -257,8 +255,83 @@ check_domain()
 				EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 				EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+
+
+	elif [ "$DTYPE" == "tech" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.tech "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+			then
+				EXP_DAYS=NULL
+			else
+				EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+				EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
+	elif [ "$DTYPE" == "co" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.co "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+			then
+				EXP_DAYS=NULL
+			else
+				EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+				EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
+	elif [ "$DTYPE" == "digital" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.digital "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+			then
+				EXP_DAYS=NULL
+			else
+				EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+				EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
+		exit 3
+	fi
+}
+
+# Check function for a specific whois
+check_domain_by_whois()
+{
+	# Set domain
+	DOMAIN=$1
+	SERVER=$2
+
+	if [ "$SERVER" == "whois.crazydomains.com" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${1}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
+	elif [ "$SERVER" == "whois.cloudflare.com" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${1}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
+	else
+		echo "UNKNOWN - "$SERVER" unsupported"
 		exit 3
 	fi
 }
@@ -269,17 +342,19 @@ help()
 	echo "Usage: $0 [ -d domain_name ] [ -w ex_days ] [ -c ex_days ] [ -h ]"
 	echo
 	echo "  -d domain        : Domain to check"
+	echo "  -s whois server  : Whois server to query by"
 	echo "  -h               : Show help"
 	echo "  -w days          : Domain expiration days (warning)"
 	echo "  -c days          : Domain expiration days (critical)"
 	echo
 }
 
-while getopts :hd:w:c: option
+while getopts :hd:s:w:c: option
 do
 	case "${option}"
 	in
 		d) DOMAIN=$( echo ${OPTARG} );;
+		s) SERVER=$OPTARG;;
 		w) WARNING=$OPTARG;;
 		c) ALARM=$OPTARG;;
 		h | *) help
@@ -294,7 +369,12 @@ then
 	exit 3
 fi
 
-check_domain "${DOMAIN}"
+if [ -n "$SERVER" ]
+then
+	check_domain_by_whois "${DOMAIN}" "${SERVER}"
+else
+	check_domain "${DOMAIN}"
+fi
 
 # exit codes based on the check_domain result
 
