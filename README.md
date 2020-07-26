@@ -58,6 +58,7 @@ Supported Top-level Domains
 Supported Whois Servers
 
 * whois.crazydomains.com
+* whois.cloudflare.com
 
 License
 -------

@@ -308,7 +308,7 @@ check_domain_by_whois()
 
 	if [ "$SERVER" == "whois.crazydomains.com" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${1}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
@@ -320,7 +320,7 @@ check_domain_by_whois()
 
 	elif [ "$SERVER" == "whois.cloudflare.com" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${1}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
