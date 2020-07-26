@@ -339,7 +339,7 @@ check_domain_by_whois()
 # Help function
 help()
 {
-	echo "Usage: $0 [ -d domain_name ] [ -w ex_days ] [ -c ex_days ] [ -h ]"
+	echo "Usage: $0 [ -d domain_name ] [ -s whois_server ] [ -w ex_days ] [ -c ex_days ] [ -h ]"
 	echo
 	echo "  -d domain        : Domain to check"
 	echo "  -s whois server  : Whois server to query by"
