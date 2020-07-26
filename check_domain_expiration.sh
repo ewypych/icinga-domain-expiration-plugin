@@ -369,11 +369,11 @@ then
 	exit 3
 fi
 
-if [ -n "$SERVER" ]
+if [ "${SERVER:=auto}" == auto ]
 then
-	check_domain_by_whois "${DOMAIN}" "${SERVER}"
-else
 	check_domain "${DOMAIN}"
+else
+	check_domain_by_whois "${DOMAIN}" "${SERVER}"
 fi
 
 # exit codes based on the check_domain result
