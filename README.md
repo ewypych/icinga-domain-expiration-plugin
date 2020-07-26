@@ -8,6 +8,8 @@ Example of use
 
 ```sh
 ./check_domain_expiration.sh -d google.com -w 60 -c 30
+or
+./check_domain_expiration.sh -d youdomain.com.au -s crazydomains.com
 ```
 
 Requirements
@@ -49,6 +51,13 @@ Supported Top-level Domains
 * im
 * uk
 * co.uk
+* tech
+* co
+* digital
+
+Supported Whois Servers
+
+* whois.crazydomains.com
 
 License
 -------
