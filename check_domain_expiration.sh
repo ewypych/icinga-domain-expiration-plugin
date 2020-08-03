@@ -293,6 +293,18 @@ check_domain()
 		fi
 
 
+	elif [ "$DTYPE" == "br" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.registro.br "${1}" | grep -i 'expires' | ${AWK} '{ print $2 }' ) 
+		if [ -z "$EXDATE_TMP" ]
+			then
+				EXP_DAYS=NULL
+			else
+				EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+				EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+
+
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3
