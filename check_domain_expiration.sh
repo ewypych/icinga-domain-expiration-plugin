@@ -195,7 +195,16 @@ check_domain()
 		fi
 	elif [ "$DTYPE" == "cz" ]
 	then
-		EXDATE=$(${WHOIS} -h whois.nic.cz "${1}" | ${AWK} '/expire:/ { gsub("[.]","/",$2); print $2 }')
+		EXDATE=$(${WHOIS} -h whois.nic.cz "${1}" | ${AWK} '/expire:/ { print $2 }' | ${AWK} '{ split($0, d, "."); print d[3]"-"d[2]"-"d[1] }')
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+	elif [ "$DTYPE" == "sk" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.sk-nic.sk "${1}" | ${AWK} '/Valid Until:/ { print $3 }')
 		if [ -z "$EXDATE" ]
 		then
 			EXP_DAYS=NULL
