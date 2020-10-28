@@ -419,27 +419,27 @@ fi
 
 if ! [[ "$EXP_DAYS" =~ ^-?[0-9]+$ ]]
 then
-	echo "UNKNOWN - expiration date has not been provided by WHOIS server"
+	echo "UNKNOWN - ${DOMAIN}: expiration date has not been provided by WHOIS server"
 	exit 3
 else
 	if [ $EXP_DAYS -gt $WARNING  ]
 	then
-		echo "OK - $EXP_DAYS days until domain expires"
+		echo "OK - ${DOMAIN}: $EXP_DAYS days until domain expires"
 		exit 0
 	elif [ $EXP_DAYS -le $WARNING -a $EXP_DAYS -gt $ALARM ]
 	then
-		echo "WARNING - $EXP_DAYS days until domain expires"
+		echo "WARNING - ${DOMAIN}: $EXP_DAYS days until domain expires"
 		exit 1
 	elif [ $EXP_DAYS -le $ALARM -a $EXP_DAYS -gt 0 ]
 	then
-		echo "CRITICAL - $EXP_DAYS days until domain expires"
+		echo "CRITICAL - ${DOMAIN}: $EXP_DAYS days until domain expires"
 		exit 2
 	elif [  $EXP_DAYS -lt 0  ]
 	then
-		echo "CRITICAL - domain has expired!"
+		echo "CRITICAL - ${DOMAIN}: domain has expired!"
 		exit 2
 	else
-		echo "UNKNOW - $EXP_DAYS"
+		echo "UNKNOW - ${DOMAIN}: $EXP_DAYS"
 		exit 3
 	fi
 fi
