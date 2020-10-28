@@ -211,6 +211,15 @@ check_domain()
 		else
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "biz" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.biz "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 	elif [ "$DTYPE" == "fr" -o "$DTYPE" == "re" -o "$DTYPE" == "yt" -o "$DTYPE" == "tf" -o "$DTYPE" == "wf" -o "$DTYPE" == "pm" ]
 	then
 		EXDATE=$(${WHOIS} -h whois.afnic.fr "${1}" | ${AWK} '/Expiry Date:/ { gsub("[:.]","-"); print $3 }' | cut -d 'T' -f1)
