@@ -55,6 +55,7 @@ Supported Top-level Domains
 * co
 * digital
 * br
+* it
 
 Supported Whois Servers
 
