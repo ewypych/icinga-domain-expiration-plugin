@@ -253,7 +253,7 @@ check_domain()
 
 	elif [ "$DTYPE" == "im" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.nic.im "${1}" | ${AWK} '/Expiry Date:/ { gsub("[:.]","-"); print $3 }' | cut -d 'T' -f1 | awk -F[/] '{print $2"/"$1"/"$3}') 
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.im "${1}" | ${AWK} '/Expiry Date:/ { gsub("[:.]","-"); print $3 }' | cut -d 'T' -f1 | awk -F[/] '{print $2"/"$1"/"$3}')
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
@@ -261,11 +261,10 @@ check_domain()
 			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
-	
-	
+
 	elif [ "$DTYPE" == "uk" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.nic.uk "${1}" | grep 'Expiry date' | ${AWK} '{ print $3 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.uk "${1}" | grep 'Expiry date' | ${AWK} '{ print $3 }' )
 		if [ -z "$EXDATE_TMP" ]
 			then
 				EXP_DAYS=NULL
@@ -277,7 +276,7 @@ check_domain()
 
 	elif [ "$DTYPE" == "tech" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.nic.tech "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.tech "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' )
 		if [ -z "$EXDATE_TMP" ]
 			then
 				EXP_DAYS=NULL
@@ -289,7 +288,7 @@ check_domain()
 
 	elif [ "$DTYPE" == "co" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.nic.co "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.co "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' )
 		if [ -z "$EXDATE_TMP" ]
 			then
 				EXP_DAYS=NULL
@@ -301,7 +300,7 @@ check_domain()
 
 	elif [ "$DTYPE" == "digital" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.nic.digital "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.digital "${1}" | grep -i 'Expiry Date' | ${AWK} '{ print $4 }' )
 		if [ -z "$EXDATE_TMP" ]
 			then
 				EXP_DAYS=NULL
@@ -313,7 +312,7 @@ check_domain()
 
 	elif [ "$DTYPE" == "br" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h whois.registro.br "${1}" | grep -i 'expires' | ${AWK} '{ print $2 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h whois.registro.br "${1}" | grep -i 'expires' | ${AWK} '{ print $2 }' )
 		if [ -z "$EXDATE_TMP" ]
 			then
 				EXP_DAYS=NULL
@@ -325,6 +324,16 @@ check_domain()
 	elif [ "$DTYPE" == "do" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.nic.do "${1}" | ${AWK} '/Registrar Registration Expiration Date:/ { print $5 }')
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+	elif [ "$DTYPE" == "it" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h whois.nic.it "${1}" | grep -i "Expire Date" | ${AWK} '{ print $3 }')
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
@@ -347,7 +356,7 @@ check_domain_by_whois()
 
 	if [ "$SERVER" == "whois.crazydomains.com" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' )
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
@@ -359,7 +368,7 @@ check_domain_by_whois()
 
 	elif [ "$SERVER" == "whois.cloudflare.com" ]
 	then
-		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' ) 
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | grep -i 'Expiration Date' | ${AWK} '{ print $5 }' )
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
