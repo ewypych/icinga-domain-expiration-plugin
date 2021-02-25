@@ -56,6 +56,7 @@ Supported Top-level Domains
 * digital
 * br
 * it
+* club
 
 Supported Whois Servers
 
