@@ -62,6 +62,7 @@ Supported Whois Servers
 
 * whois.crazydomains.com
 * whois.cloudflare.com
+* whois.drs.ua, whois.pp.ua, whois.biz.ua
 
 License
 -------
