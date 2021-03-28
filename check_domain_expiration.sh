@@ -341,6 +341,15 @@ check_domain()
 			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "club" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.nic.club "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3
@@ -377,6 +386,16 @@ check_domain_by_whois()
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
 
+	elif [ "$SERVER" == "whois.drs.ua" -o "$SERVER" == "whois.pp.ua" -o "$SERVER" == "whois.biz.ua" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h ${SERVER} "${DOMAIN}" | awk '/Expiration Date:/ { gsub("[:.]"," "); print $3 }' )
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 
 	else
 		echo "UNKNOWN - "$SERVER" unsupported"
@@ -448,7 +467,7 @@ else
 		echo "CRITICAL - ${DOMAIN}: domain has expired!"
 		exit 2
 	else
-		echo "UNKNOW - ${DOMAIN}: $EXP_DAYS"
+		echo "UNKNOWN - ${DOMAIN}: $EXP_DAYS"
 		exit 3
 	fi
 fi
