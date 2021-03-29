@@ -57,6 +57,7 @@ Supported Top-level Domains
 * br
 * it
 * club
+* ie
 
 Supported Whois Servers
 
