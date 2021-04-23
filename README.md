@@ -58,6 +58,8 @@ Supported Top-level Domains
 * it
 * club
 * ie
+* id
+* dev
 
 Supported Whois Servers
 
