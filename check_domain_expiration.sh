@@ -380,6 +380,15 @@ check_domain()
 		else
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "io" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.nic.io "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3

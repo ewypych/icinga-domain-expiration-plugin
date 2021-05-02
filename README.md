@@ -60,6 +60,7 @@ Supported Top-level Domains
 * ie
 * id
 * dev
+* io
 
 Supported Whois Servers
 
