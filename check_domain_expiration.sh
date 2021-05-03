@@ -42,6 +42,16 @@ check_domain()
 			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "ie" ]
+	then
+	        EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE_TMP" ]
+		then
+		        EXP_DAYS=NULL
+		else
+		        EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	        fi
 	elif [ "$DTYPE" == "se" ] || [ "$DTYPE" == "nu"  ]
 	then
 		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/expires:/ { print $2 }')
@@ -95,6 +105,16 @@ check_domain()
 	elif [ "$DTYPE" == "net" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+	elif [ "$DTYPE" == "dev" ]
+	then
+		EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
@@ -324,6 +344,16 @@ check_domain()
 	elif [ "$DTYPE" == "do" ]
 	then
 		EXDATE_TMP=$(${WHOIS} -h whois.nic.do "${1}" | ${AWK} '/Registrar Registration Expiration Date:/ { print $5 }')
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+	elif [ "$DTYPE" == "id" ]
+	then
+	        EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Expiration Date:/ { print $3 }')
 		if [ -z "$EXDATE_TMP" ]
 		then
 			EXP_DAYS=NULL
