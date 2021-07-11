@@ -389,6 +389,44 @@ check_domain()
 		else
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "space" ]
+	then
+	        EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE_TMP" ]
+		then
+		        EXP_DAYS=NULL
+		else
+		        EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	        fi
+	elif [ "$DTYPE" == "rocks" ]
+	then
+	        EXDATE_TMP=$(${WHOIS} "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE_TMP" ]
+		then
+		        EXP_DAYS=NULL
+		else
+		        EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+	        fi
+	elif [ "$DTYPE" == "us"  ]
+	then
+		EXDATE=$(${WHOIS} -h www.whois.us "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
+	elif [ "$DTYPE" == "in" ]
+	then
+		EXDATE=$(${WHOIS} -h whois.registry.in "${1}" | ${AWK} '/Registry Expiry Date:/ { gsub("[:.]","-"); print $4 }' | cut -d 'T' -f1)
+		if [ -z "$EXDATE" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3

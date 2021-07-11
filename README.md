@@ -61,6 +61,10 @@ Supported Top-level Domains
 * id
 * dev
 * io
+* rocks
+* space
+* us
+* in
 
 Supported Whois Servers
 
