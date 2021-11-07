@@ -65,6 +65,8 @@ Supported Top-level Domains
 * space
 * us
 * in
+* fm
+* xyz
 
 Supported Whois Servers
 
