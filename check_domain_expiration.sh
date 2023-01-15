@@ -467,6 +467,16 @@ check_domain()
 			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
 			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
 		fi
+	elif [ "$DTYPE" == "cc" ]
+	then
+		EXDATE_TMP=$(${WHOIS} -h ccwhois.verisign-grs.com "${1}" | ${AWK} '/Registry Expiry Date:/ { print $4 }' | cut -c 1-16)
+		if [ -z "$EXDATE_TMP" ]
+		then
+			EXP_DAYS=NULL
+		else
+			EXDATE=`date -d"$EXDATE_TMP" +%Y-%m-%d`
+			EXP_DAYS=$(( ( $(date -ud ${EXDATE} +'%s') - $(date -ud `date +%Y-%m-%d` +'%s') )/60/60/24 ))
+		fi
 	else
 		echo "UNKNOWN - "$DTYPE" unsupported"
 		exit 3
